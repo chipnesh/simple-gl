@@ -1,0 +1,76 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+##
+## Following HTTP Request Live Templates are available:
+## * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+## * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+## * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+POST http://localhost:8080/account
+Accept: application/json
+Content-Type: application/json
+Cache-Control: no-cache
+
+{
+  "id": "132057b8-d50d-4abf-a13b-11f1c353895a"
+}
+
+###
+
+POST http://localhost:8080/account
+Accept: application/json
+Content-Type: application/json
+Cache-Control: no-cache
+
+{
+  "id": "7a8194d3-40b8-447b-912e-4a86082c0631"
+}
+
+###
+
+PUT http://localhost:8080/account/132057b8-d50d-4abf-a13b-11f1c353895a/deposit
+Accept: application/json
+Content-Type: application/json
+Cache-Control: no-cache
+
+{
+  "amount": 100
+}
+
+###
+
+PUT http://localhost:8080/account/132057b8-d50d-4abf-a13b-11f1c353895a/withdraw
+Accept: application/json
+Content-Type: application/json
+Cache-Control: no-cache
+
+{
+  "amount": 50
+}
+
+###
+
+POST http://localhost:8080/transfer
+Accept: application/json
+Content-Type: application/json
+Cache-Control: no-cache
+
+{
+  "id": "520392e4-d131-43c2-a46e-510c589015a5",
+  "from": "132057b8-d50d-4abf-a13b-11f1c353895a",
+  "to": "7a8194d3-40b8-447b-912e-4a86082c0631",
+  "amount": 50
+}
+
+###
+
+GET http://localhost:8080/account/132057b8-d50d-4abf-a13b-11f1c353895a
+Accept: application/json
+Cache-Control: no-cache
+
+###
+
+GET http://localhost:8080/transfer/520392e4-d131-43c2-a46e-510c589015a5
+Accept: application/json
+Cache-Control: no-cache
+
+###
