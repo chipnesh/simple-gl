@@ -45,7 +45,7 @@ data class ReturnMoneyBackCommand(
 class AccountsActor(
     scope: CoroutineScope,
     private val events: EventsGateway,
-    private val accounts: AccountsStore
+    private val accounts: AccountsStorage
 ) {
 
     companion object {

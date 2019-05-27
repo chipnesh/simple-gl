@@ -26,7 +26,7 @@ class TransferActorTest {
         job = Job()
         val scope = CoroutineScope(Dispatchers.Unconfined + CoroutineName("Test scope") + job)
         events = EventsGateway(scope)
-        actor = TransfersActor(scope, events, object : TransferStore {
+        actor = TransfersActor(scope, events, object : TransferStorage {
             override fun get(key: String) = transfers[key]
             override fun set(key: String, value: Transfer) {
                 transfers[key] = value

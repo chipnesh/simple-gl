@@ -12,14 +12,14 @@ import java.math.BigDecimal
 
 class AccountsAggregateProxy(
     configuration: Configuration,
-    private val accountsStore: AccountsStore
+    private val accountsStorage: AccountsStorage
 ) : AccountsOperations {
 
     private val commands = configuration.commandGateway()
     private val queries = configuration.queryGateway()
 
     override suspend fun create(id: String): AccountOperationResult {
-        if (accountsStore.findById(id) != null) return Failure(AccountAlreadyExists(id))
+        if (accountsStorage.findById(id) != null) return Failure(AccountAlreadyExists(id))
         commands.sendAndWait<String>(CreateAccountCommand(id))
         return AccountCreated(id)
     }

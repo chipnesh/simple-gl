@@ -16,15 +16,15 @@ import me.chipnesh.gl.actor.AccountsActorProxy
 import me.chipnesh.gl.actor.EventsGateway
 import me.chipnesh.gl.actor.TransfersActorProxy
 import me.chipnesh.gl.actor.account.AccountsActor
-import me.chipnesh.gl.actor.account.MapAccountStore
-import me.chipnesh.gl.actor.transfer.MapTransferStore
+import me.chipnesh.gl.actor.account.MapAccountStorage
+import me.chipnesh.gl.actor.transfer.MapTransferStorage
 import me.chipnesh.gl.actor.transfer.TransferSaga
 import me.chipnesh.gl.actor.transfer.TransfersActor
 import me.chipnesh.gl.axon.AccountsAggregateProxy
 import me.chipnesh.gl.axon.TransfersAggregateProxy
-import me.chipnesh.gl.axon.account.AccountsStore
+import me.chipnesh.gl.axon.account.AccountsStorage
 import me.chipnesh.gl.axon.buildInMemoryConfiguration
-import me.chipnesh.gl.axon.transfer.TransfersStore
+import me.chipnesh.gl.axon.transfer.TransfersStorage
 import me.chipnesh.gl.core.AccountsOperations
 import me.chipnesh.gl.core.TransfersOperations
 import me.chipnesh.gl.rest.account
@@ -50,8 +50,8 @@ fun Application.serializationModule() {
 }
 
 fun Application.axonModule() {
-    val accountsStore = AccountsStore()
-    val transfersStore = TransfersStore()
+    val accountsStore = AccountsStorage()
+    val transfersStore = TransfersStorage()
 
     val config = buildInMemoryConfiguration(accountsStore, transfersStore)
     config.start()
@@ -64,8 +64,8 @@ fun Application.axonModule() {
 fun Application.actorModule() {
     val scope = CoroutineScope(Dispatchers.Default + CoroutineName("Application scope"))
     val eventsGateway = EventsGateway(scope)
-    val accountsActor = AccountsActor(scope, eventsGateway, MapAccountStore)
-    val transfersActor = TransfersActor(scope, eventsGateway, MapTransferStore)
+    val accountsActor = AccountsActor(scope, eventsGateway, MapAccountStorage)
+    val transfersActor = TransfersActor(scope, eventsGateway, MapTransferStorage)
 
     TransferSaga(scope, accountsActor, transfersActor, eventsGateway).init()
 

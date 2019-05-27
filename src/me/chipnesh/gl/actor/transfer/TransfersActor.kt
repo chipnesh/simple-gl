@@ -30,7 +30,7 @@ data class MarkTransferCompletedCommand(val transferId: String) : TransferComman
 class TransfersActor(
     scope: CoroutineScope,
     private val events: EventsGateway,
-    private val transfers: TransferStore
+    private val transfers: TransferStorage
 ) {
 
     companion object {

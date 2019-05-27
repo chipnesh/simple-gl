@@ -23,7 +23,7 @@ class AccountActorTest {
         job = Job()
         val scope = CoroutineScope(Dispatchers.Unconfined + CoroutineName("Test scope") + job)
         events = EventsGateway(scope)
-        actor = AccountsActor(scope, events, object : AccountsStore {
+        actor = AccountsActor(scope, events, object : AccountsStorage {
             override fun get(key: String) = accounts[key]
             override fun set(key: String, value: Account) {
                 accounts[key] = value

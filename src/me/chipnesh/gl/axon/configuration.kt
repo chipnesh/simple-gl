@@ -12,8 +12,8 @@ import org.axonframework.modelling.saga.repository.SagaStore
 import org.axonframework.modelling.saga.repository.inmemory.InMemorySagaStore
 
 fun buildInMemoryConfiguration(
-    accountsStore: AccountsStore,
-    transfersStore: TransfersStore
+    accountsStorage: AccountsStorage,
+    transfersStorage: TransfersStorage
 ): Configuration = DefaultConfigurer.defaultConfiguration().apply {
 
     configureEmbeddedEventStore { InMemoryEventStorageEngine() }
@@ -34,14 +34,14 @@ fun buildInMemoryConfiguration(
             .builder(TransferAggregate::class.java)
             .build()
     }
-    registerQueryHandler { AccountQueryHandler(accountsStore) }
-    registerQueryHandler { TransfersQueryHandler(transfersStore) }
+    registerQueryHandler { AccountQueryHandler(accountsStorage) }
+    registerQueryHandler { TransfersQueryHandler(transfersStorage) }
 
     registerCommandHandler { AccountCommandHandler(it.repository(AccountAggregate::class.java), it.eventBus()) }
 
     eventProcessing {
-        it.registerEventHandler { AccountEventHandler(accountsStore) }
-        it.registerEventHandler { TransferEventHandler(transfersStore) }
+        it.registerEventHandler { AccountEventHandler(accountsStorage) }
+        it.registerEventHandler { TransferEventHandler(transfersStorage) }
 
         it.registerSaga(TransferSaga::class.java)
     }

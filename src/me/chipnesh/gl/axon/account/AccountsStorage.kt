@@ -2,7 +2,7 @@ package me.chipnesh.gl.axon.account
 
 import java.util.concurrent.ConcurrentHashMap
 
-class AccountsStore {
+class AccountsStorage {
     private val accountsMap = ConcurrentHashMap<String, AccountEntity>()
 
     fun save(account: AccountEntity): AccountEntity {

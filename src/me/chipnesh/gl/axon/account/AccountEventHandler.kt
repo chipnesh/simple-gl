@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 import java.math.BigDecimal
 
 class AccountEventHandler(
-    private val store: AccountsStore
+    private val storage: AccountsStorage
 ) {
     companion object {
         private val log = LoggerFactory.getLogger(AccountEventHandler::class.java)
@@ -15,24 +15,24 @@ class AccountEventHandler(
     @EventHandler
     fun on(event: AccountCreatedEvent) {
         log.info("Got $event event")
-        store.save(AccountEntity(event.accountId, BigDecimal.ZERO))
+        storage.save(AccountEntity(event.accountId, BigDecimal.ZERO))
     }
 
     @EventHandler
     fun on(event: MoneyAddedEvent) {
         log.info("Got $event event")
-        store.findById(event.accountId)?.let { account ->
+        storage.findById(event.accountId)?.let { account ->
             account.balance += event.amount
-            store.save(account)
+            storage.save(account)
         }
     }
 
     @EventHandler
     fun on(event: MoneySubtractedEvent) {
         log.info("Got $event event")
-        store.findById(event.accountId)?.let { account ->
+        storage.findById(event.accountId)?.let { account ->
             account.balance -= event.amount
-            store.save(account)
+            storage.save(account)
         }
     }
 }

@@ -8,7 +8,7 @@ import org.axonframework.queryhandling.QueryHandler
 import org.slf4j.LoggerFactory
 
 class AccountQueryHandler(
-    private val store: AccountsStore
+    private val storage: AccountsStorage
 ) {
     companion object {
         private val log = LoggerFactory.getLogger(AccountQueryHandler::class.java)
@@ -17,7 +17,7 @@ class AccountQueryHandler(
     @QueryHandler
     fun get(qry: GetAccountBalanceQuery): AccountOperationResult {
         log.info("Got $qry query")
-        val account = store.findById(qry.accountId) ?: return Failure(AccountNotFound(qry.accountId))
+        val account = storage.findById(qry.accountId) ?: return Failure(AccountNotFound(qry.accountId))
         return AccountBalance(account.accountId, account.balance)
     }
 }

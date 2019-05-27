@@ -4,12 +4,12 @@ package me.chipnesh.gl.actor.transfer
  * WARNING!
  * Should not be used out of actor's scope!
  */
-interface TransferStore {
+interface TransferStorage {
     operator fun get(key: String): Transfer?
     operator fun set(key: String, value: Transfer)
 }
 
-object MapTransferStore : TransferStore {
+object MapTransferStorage : TransferStorage {
     private val transfers = mutableMapOf<String, Transfer>()
 
     override fun get(key: String) = transfers[key]

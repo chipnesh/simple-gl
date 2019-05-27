@@ -6,7 +6,7 @@ import org.axonframework.eventhandling.EventHandler
 import org.slf4j.LoggerFactory
 
 class TransferEventHandler(
-    private val store: TransfersStore
+    private val storage: TransfersStorage
 ) {
 
     companion object {
@@ -16,7 +16,7 @@ class TransferEventHandler(
     @EventHandler
     fun on(event: TransferCreatedEvent) {
         log.info("Got $event event")
-        store.save(
+        storage.save(
             TransferEntity(
                 event.transferId,
                 event.fromAccountId,
@@ -29,18 +29,18 @@ class TransferEventHandler(
     @EventHandler
     fun on(event: TransferFailedEvent) {
         log.info("Got $event event")
-        store.findById(event.transferId)?.let { transfer ->
+        storage.findById(event.transferId)?.let { transfer ->
             transfer.status = FAILED
-            store.save(transfer)
+            storage.save(transfer)
         }
     }
 
     @EventHandler
     fun on(event: TransferCompletedEvent) {
         log.info("Got $event event")
-        store.findById(event.transferId)?.let { transfer ->
+        storage.findById(event.transferId)?.let { transfer ->
             transfer.status = COMPLETED
-            store.save(transfer)
+            storage.save(transfer)
         }
     }
 }

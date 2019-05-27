@@ -2,7 +2,7 @@ package me.chipnesh.gl.axon.transfer
 
 import java.util.concurrent.ConcurrentHashMap
 
-class TransfersStore {
+class TransfersStorage {
     private val transfersMap = ConcurrentHashMap<String, TransferEntity>()
 
     fun save(transfer: TransferEntity): TransferEntity {

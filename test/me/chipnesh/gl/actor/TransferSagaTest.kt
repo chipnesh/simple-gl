@@ -3,7 +3,7 @@ package me.chipnesh.gl.actor
 import kotlinx.coroutines.*
 import me.chipnesh.gl.actor.account.Account
 import me.chipnesh.gl.actor.account.AccountsActor
-import me.chipnesh.gl.actor.account.AccountsStore
+import me.chipnesh.gl.actor.account.AccountsStorage
 import me.chipnesh.gl.actor.transfer.*
 import me.chipnesh.gl.core.TransferOperationResult.TransferCreated
 import me.chipnesh.gl.core.TransferStatus
@@ -28,13 +28,13 @@ class TransferSagaTest {
         job = Job()
         val scope = CoroutineScope(Dispatchers.Default + CoroutineName("Test scope") + job)
         events = EventsGateway(scope)
-        transfersActor = TransfersActor(scope, events, object : TransferStore {
+        transfersActor = TransfersActor(scope, events, object : TransferStorage {
             override fun get(key: String) = transfers[key]
             override fun set(key: String, value: Transfer) {
                 transfers[key] = value
             }
         })
-        accountsActor = AccountsActor(scope, events, object : AccountsStore {
+        accountsActor = AccountsActor(scope, events, object : AccountsStorage {
             override fun get(key: String) = accounts[key]
             override fun set(key: String, value: Account) {
                 accounts[key] = value
