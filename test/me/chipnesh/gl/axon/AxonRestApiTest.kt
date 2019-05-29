@@ -38,12 +38,12 @@ class AxonRestApiTest {
         }
 
         @Test
-        fun returnNotFoundWhenUnexistentIdPassed() {
+        fun returnNotFoundWhenNonexistentIdPassed() {
             withTestApplication(module) {
                 runBlocking {
-                    handleRequest(HttpMethod.Get, "/account/1").apply {
+                    handleRequest(HttpMethod.Get, "/account/wrongId").apply {
                         assertEquals(HttpStatusCode.NotFound, response.status())
-                        assertEquals("Account '1' not found", response.content)
+                        assertEquals("Account 'wrongId' not found", response.content)
                     }
                 }
             }
@@ -91,7 +91,7 @@ class AxonRestApiTest {
         }
 
         @Test
-        fun returnNotFoundWhenUnexistentIdPassed() {
+        fun returnNotFoundWhenNonexistentIdPassed() {
             withTestApplication(module) {
                 runBlocking {
                     handleRequest(HttpMethod.Put, "/account/wrongId/deposit") {
@@ -153,7 +153,7 @@ class AxonRestApiTest {
         }
 
         @Test
-        fun returnNotFoundWhenUnexistentIdPassed() {
+        fun returnNotFoundWhenNonexistentIdPassed() {
             withTestApplication(module) {
                 runBlocking {
                     handleRequest(HttpMethod.Put, "/account/wrongId/withdraw") {
@@ -222,7 +222,7 @@ class AxonRestApiTest {
         }
 
         @Test
-        fun returnNotFoundWhenUnexistentIdPassed() {
+        fun returnNotFoundWhenNonexistentIdPassed() {
             withTestApplication(module) {
                 runBlocking {
                     handleRequest(HttpMethod.Get, "/transfer/wrongId").apply {
