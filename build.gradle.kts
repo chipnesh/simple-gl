@@ -38,6 +38,8 @@ dependencies {
     compile("javax.inject:javax.inject:$javax_version")
     testCompile("io.ktor:ktor-server-tests:$ktor_version")
     testCompile("org.axonframework:axon-test:$axon_version")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1")
 }
 
 kotlin.sourceSets["main"].kotlin.srcDirs("src")
