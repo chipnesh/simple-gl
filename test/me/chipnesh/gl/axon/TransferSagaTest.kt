@@ -13,10 +13,6 @@ import org.junit.Test
 class TransferSagaTest {
 
     private lateinit var testFixture: FixtureConfiguration
-    private val transferId = "transferId"
-    private val fromAccountId = "fromAccountId"
-    private val toAccountId = "toAccountId"
-    private val amountOfMoneyToTransfer = 40.toBigDecimal()
 
     @Before
     fun setUp() {
@@ -26,133 +22,133 @@ class TransferSagaTest {
     @Test
     fun testTransferCreated() {
         testFixture.givenNoPriorActivity()
-            .whenAggregate(transferId).publishes(
+            .whenAggregate("transferId").publishes(
                 TransferCreatedEvent(
-                    transferId,
-                    fromAccountId,
-                    toAccountId,
-                    amountOfMoneyToTransfer
+                    "transferId",
+                    "fromAccountId",
+                    "toAccountId",
+                    40.toBigDecimal()
                 )
             )
             .expectActiveSagas(1)
             .expectDispatchedCommands(
                 DebitSourceAccountCommand(
-                    fromAccountId,
-                    transferId,
-                    amountOfMoneyToTransfer
+                    "fromAccountId",
+                    "transferId",
+                    40.toBigDecimal()
                 )
             )
     }
 
     @Test
     fun testSourceAccountNotFound() {
-        testFixture.givenAggregate(transferId).published(
+        testFixture.givenAggregate("transferId").published(
             TransferCreatedEvent(
-                transferId,
-                fromAccountId,
-                toAccountId,
-                amountOfMoneyToTransfer
+                "transferId",
+                "fromAccountId",
+                "toAccountId",
+                40.toBigDecimal()
             )
         )
-            .whenPublishingA(SourceAccountNotFoundEvent(transferId))
+            .whenPublishingA(SourceAccountNotFoundEvent("transferId"))
             .expectActiveSagas(0)
-            .expectDispatchedCommands(MarkTransferFailedCommand(transferId))
+            .expectDispatchedCommands(MarkTransferFailedCommand("transferId"))
     }
 
     @Test
     fun testSourceAccountDebitRejected() {
-        testFixture.givenAggregate(transferId).published(
+        testFixture.givenAggregate("transferId").published(
             TransferCreatedEvent(
-                transferId,
-                fromAccountId,
-                toAccountId,
-                amountOfMoneyToTransfer
+                "transferId",
+                "fromAccountId",
+                "toAccountId",
+                40.toBigDecimal()
             )
         )
-            .whenAggregate(fromAccountId)
-            .publishes(SourceAccountDebitRejectedEvent(transferId))
+            .whenAggregate("fromAccountId")
+            .publishes(SourceAccountDebitRejectedEvent("transferId"))
             .expectActiveSagas(0)
-            .expectDispatchedCommands(MarkTransferFailedCommand(transferId))
+            .expectDispatchedCommands(MarkTransferFailedCommand("transferId"))
     }
 
     @Test
     fun testSourceAccountDebited() {
-        testFixture.givenAggregate(transferId).published(
+        testFixture.givenAggregate("transferId").published(
             TransferCreatedEvent(
-                transferId,
-                fromAccountId,
-                toAccountId,
-                amountOfMoneyToTransfer
+                "transferId",
+                "fromAccountId",
+                "toAccountId",
+                40.toBigDecimal()
             )
         )
-            .whenAggregate(fromAccountId).publishes(
+            .whenAggregate("fromAccountId").publishes(
                 SourceAccountDebitedEvent(
-                    fromAccountId,
-                    amountOfMoneyToTransfer,
-                    transferId
+                    "fromAccountId",
+                    40.toBigDecimal(),
+                    "transferId"
                 )
             )
             .expectActiveSagas(1)
             .expectDispatchedCommands(
                 CreditDestinationAccountCommand(
-                    toAccountId,
-                    transferId,
-                    amountOfMoneyToTransfer
+                    "toAccountId",
+                    "transferId",
+                    40.toBigDecimal()
                 )
             )
     }
 
     @Test
     fun testDestinationAccountNotFound() {
-        testFixture.givenAggregate(transferId).published(
+        testFixture.givenAggregate("transferId").published(
             TransferCreatedEvent(
-                transferId,
-                fromAccountId,
-                toAccountId,
-                amountOfMoneyToTransfer
+                "transferId",
+                "fromAccountId",
+                "toAccountId",
+                40.toBigDecimal()
             )
         )
-            .andThenAggregate(fromAccountId).published(
+            .andThenAggregate("fromAccountId").published(
                 SourceAccountDebitedEvent(
-                    fromAccountId, amountOfMoneyToTransfer, transferId
+                    "fromAccountId", 40.toBigDecimal(), "transferId"
                 )
             )
-            .whenPublishingA(DestinationAccountNotFoundEvent(transferId))
+            .whenPublishingA(DestinationAccountNotFoundEvent("transferId"))
             .expectActiveSagas(0)
             .expectDispatchedCommands(
                 ReturnMoneyCommand(
-                    fromAccountId,
-                    amountOfMoneyToTransfer
+                    "fromAccountId",
+                    40.toBigDecimal()
                 ),
-                MarkTransferFailedCommand(transferId)
+                MarkTransferFailedCommand("transferId")
             )
     }
 
     @Test
     fun testDestinationAccountCredited() {
-        testFixture.givenAggregate(transferId).published(
+        testFixture.givenAggregate("transferId").published(
             TransferCreatedEvent(
-                transferId,
-                fromAccountId,
-                toAccountId,
-                amountOfMoneyToTransfer
+                "transferId",
+                "fromAccountId",
+                "toAccountId",
+                40.toBigDecimal()
             )
         )
-            .andThenAggregate(fromAccountId).published(
+            .andThenAggregate("fromAccountId").published(
                 SourceAccountDebitedEvent(
-                    fromAccountId,
-                    amountOfMoneyToTransfer,
-                    transferId
+                    "fromAccountId",
+                    40.toBigDecimal(),
+                    "transferId"
                 )
             )
-            .whenAggregate(toAccountId).publishes(
+            .whenAggregate("toAccountId").publishes(
                 DestinationAccountCreditedEvent(
-                    toAccountId,
-                    amountOfMoneyToTransfer,
-                    transferId
+                    "toAccountId",
+                    40.toBigDecimal(),
+                    "transferId"
                 )
             )
             .expectActiveSagas(0)
-            .expectDispatchedCommands(MarkTransferCompletedCommand(transferId))
+            .expectDispatchedCommands(MarkTransferCompletedCommand("transferId"))
     }
 }

@@ -10,10 +10,6 @@ import java.math.BigDecimal
 class TransferAggregateTest {
 
     private lateinit var fixture: FixtureConfiguration<TransferAggregate>
-    private val transferId = "transferId"
-    private val fromAccountId = "fromAccountId"
-    private val toAccountId = "toAccountId"
-    private val amount = BigDecimal(20)
 
     @Before
     fun setUp() {
@@ -23,21 +19,21 @@ class TransferAggregateTest {
     @Test
     fun testCreateTransfer() {
         fixture.givenNoPriorActivity()
-            .`when`(CreateTransferCommand(transferId, fromAccountId, toAccountId, amount))
-            .expectEvents(TransferCreatedEvent(transferId, fromAccountId, toAccountId, amount))
+            .`when`(CreateTransferCommand("transferId", "fromAccountId", "toAccountId", 20.toBigDecimal()))
+            .expectEvents(TransferCreatedEvent("transferId", "fromAccountId", "toAccountId", 20.toBigDecimal()))
     }
 
     @Test
     fun testMarkTransferCompleted() {
-        fixture.given(TransferCreatedEvent(transferId, fromAccountId, toAccountId, amount))
-            .`when`(MarkTransferCompletedCommand(transferId))
-            .expectEvents(TransferCompletedEvent(transferId))
+        fixture.given(TransferCreatedEvent("transferId", "fromAccountId", "toAccountId", 20.toBigDecimal()))
+            .`when`(MarkTransferCompletedCommand("transferId"))
+            .expectEvents(TransferCompletedEvent("transferId"))
     }
 
     @Test
     fun testMarkTransferFailed() {
-        fixture.given(TransferCreatedEvent(transferId, fromAccountId, toAccountId, amount))
-            .`when`(MarkTransferFailedCommand(transferId))
-            .expectEvents(TransferFailedEvent(transferId))
+        fixture.given(TransferCreatedEvent("transferId", "fromAccountId", "toAccountId", 20.toBigDecimal()))
+            .`when`(MarkTransferFailedCommand("transferId"))
+            .expectEvents(TransferFailedEvent("transferId"))
     }
 }

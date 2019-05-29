@@ -13,5 +13,5 @@ class AccountsStorage {
         return account
     }
 
-    fun findById(accountId: String) = accountsMap[accountId]
+    fun findById(accountId: String) = accountsMap[accountId]?.copy()
 }

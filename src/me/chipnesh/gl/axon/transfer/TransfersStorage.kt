@@ -13,5 +13,5 @@ class TransfersStorage {
         return transfer
     }
 
-    fun findById(transferId: String) = transfersMap[transferId]
+    fun findById(transferId: String) = transfersMap[transferId]?.copy()
 }
